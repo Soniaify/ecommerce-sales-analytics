@@ -32,22 +32,24 @@ page = st.sidebar.radio(
     ]
 )
 
-# Load cleaned sales data
-@st.cache_data
-def load_data():
-    return pd.read_csv(
-        "data/cleaned_online_retail.csv",
-        dtype={
-            "InvoiceNo": str,
-            "StockCode": str
-        },
-        parse_dates=["InvoiceDate"]
-    )
-
-sales = load_data()
-
 # Business Overview
 if page == "Business Overview":
+
+    st.header("Business Overview")
+
+    monthly_sales = pd.read_csv(
+        "reports/monthly_sales.csv",
+        parse_dates=["Month"]
+    )
+
+    customer_data = pd.read_csv(
+        "reports/rfm_customer_metrics.csv"
+    )
+
+    total_revenue = monthly_sales["Total_Revenue"].sum()
+    total_orders = monthly_sales["Total_Orders"].sum()
+    total_products = 3922
+    total_customers = len(customer_data)
 
     st.subheader("Sales Summary")
 
@@ -57,18 +59,6 @@ if page == "Business Overview":
         f"{total_products:,} unique products."
     )
 
-    st.caption(
-        "Note: Revenue represents positive sales transactions. "
-        "Returns and cancellations were excluded during cleaning."
-    )
-
-    st.header("Business Overview")
-
-    total_revenue = sales["Revenue"].sum()
-    total_orders = sales["InvoiceNo"].nunique()
-    total_products = sales["StockCode"].nunique()
-    total_customers = sales["CustomerID"].nunique()
-
     col1, col2, col3, col4 = st.columns(4)
 
     col1.metric("Total Revenue", f"£{total_revenue:,.2f}")
@@ -76,7 +66,10 @@ if page == "Business Overview":
     col3.metric("Unique Products", f"{total_products:,}")
     col4.metric("Identifiable Customers", f"{total_customers:,}")
 
-    st.success("Sales data loaded successfully!")
+    st.caption(
+        "Note: Revenue represents positive sales transactions. "
+        "Returns and cancellations were excluded during cleaning."
+    )
 
 # Sales Analysis
 elif page == "Sales Analysis":
