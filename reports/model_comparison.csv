@@ -1,0 +1,3 @@
+Model,MAE,RMSE,MAPE
+Linear Regression,502050.35,536049.4,39.28
+Random Forest,486086.43,522816.79,37.91
