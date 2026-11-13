@@ -109,25 +109,6 @@ elif page == "Sales Analysis":
         y="Total_Revenue"
     )
 
-    st.subheader("Revenue by Customer Segment")
-
-    segment_revenue = (
-        segments.groupby("Segment")["Monetary"]
-        .sum()
-        .reset_index()
-    )
-
-    segment_revenue.columns = [
-        "Segment",
-        "Total_Revenue"
-    ]
-
-    st.bar_chart(
-        segment_revenue,
-        x="Segment",
-        y="Total_Revenue"
-    )
-
     st.dataframe(
         monthly_sales,
         use_container_width=True
@@ -161,6 +142,30 @@ elif page == "Customer Segmentation":
 
     st.dataframe(
         segment_counts,
+        use_container_width=True
+    )
+
+    st.subheader("Revenue by Customer Segment")
+
+    segment_revenue = (
+        segments.groupby("Segment")["Monetary"]
+        .sum()
+        .reset_index()
+    )
+
+    segment_revenue.columns = [
+        "Segment",
+        "Total_Revenue"
+    ]
+
+    st.bar_chart(
+        segment_revenue,
+        x="Segment",
+        y="Total_Revenue"
+    )
+
+    st.dataframe(
+        segment_revenue,
         use_container_width=True
     )
 
